@@ -1,5 +1,5 @@
 <script setup>
-	import { ref, onMounted } from 'vue'
+	import { ref, onMounted, watch } from 'vue'
 	import { db } from './data/guitarras'
 	import Guitarra from './components/Guitarra.vue'
     import Header from "./components/Header.vue";
@@ -10,12 +10,27 @@
     const carrito = ref([])
     const guitarra = ref({})
 
+    watch(carrito, () => {
+        guardarLocalStorage()
+    }, {
+        deep: true
+    })
+
 	/* Metodo del ciclo de vida */
 	/* Ejecuta lo que tiene cuando el componente esta listo */
 	onMounted(() => {
 		guitarras.value = db;
         guitarra.value = db[3]
+
+        const carritoStorage = localStorage.getItem('carrito')
+        if (carritoStorage) {
+            carrito.value = JSON.parse(carritoStorage)
+        }
 	})
+
+    const guardarLocalStorage = () => {
+        localStorage.setItem('carrito', JSON.stringify(carrito.value))
+    }
 
 	const agregarCarrito = (guitarra) => {
         const existeCarrito = carrito.value.findIndex(producto => producto.id === guitarra.id)
@@ -59,7 +74,7 @@
     @agregar-carrito="agregarCarrito"
     @eliminar-producto="eliminarProducto"
     @vaciar-carrito="vaciarCarrito"
-    ></Header>
+    />
 
     <main class="container-xl mt-5">
         <h2 class="text-center">Nuestra Colección</h2>
@@ -73,5 +88,5 @@
         </div>
     </main>
 
-    <Footer></Footer>
+    <Footer/>
 </template>
