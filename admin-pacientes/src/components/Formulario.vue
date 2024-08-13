@@ -9,6 +9,15 @@
         sintomas: ''
     })
 
+    const validar = () => {
+       if (Object.values(paciente).includes('')){
+            console.log('Si estan vacios')
+            return
+       }
+       console.log('Agregando...');
+       
+    }
+
 </script>
 
 <template>
@@ -22,8 +31,8 @@
 
         <form
             class="px-5 py-10 mb-10 bg-white rounded-lg shadow-md"
+            @submit.prevent="validar"
         >
-        {{ paciente.nombre }}
             <div class="mb-5">
                 <label
                     for="mascota"
@@ -52,6 +61,7 @@
                     type="text"
                     placeholder="Nombre del propietario"
                     class="w-full p-2 mt-2 placeholder-gray-400 border-2 rounded-md"
+                    v-model="paciente.propietario"
                 />
             </div>
 
@@ -67,6 +77,7 @@
                     type="email"
                     placeholder="Correo del propietario"
                     class="w-full p-2 mt-2 placeholder-gray-400 border-2 rounded-md"
+                    v-model="paciente.correo"
                 />
             </div>
 
@@ -82,6 +93,7 @@
                     type="date"
                     placeholder="Fecha de alta"
                     class="w-full p-2 mt-2 placeholder-gray-400 border-2 rounded-md"
+                    v-model="paciente.alta"
                 />
             </div>
 
@@ -97,6 +109,7 @@
                     type="text"
                     placeholder="Describe los síntomas"
                     class="w-full h-40 p-2 mt-2 placeholder-gray-400 border-2 rounded-md"
+                    v-model="paciente.sintomas"
                 />
             </div>
 
