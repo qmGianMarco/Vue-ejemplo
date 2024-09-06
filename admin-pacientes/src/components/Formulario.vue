@@ -1,5 +1,5 @@
 <script setup>
-    import { reactive } from 'vue';
+    import { reactive, computed } from 'vue';
     import Alerta from './Alerta .vue';
 
     const alerta = reactive({
@@ -11,6 +11,10 @@
      'guardar-paciente'])
 
     const props = defineProps({
+        id: {
+            type: [String, null],
+            required: true
+        },
         nombre: {
             type: String,
             required: true
@@ -34,14 +38,28 @@
     })
 
     const validar = () => {
-       if (Object.values(props).includes('')){
+        if (Object.values(props).includes('')){
             alerta.mensaje = 'Todos los campos son obligatorios';
             alerta.tipo = 'error'
             return
-       }
+        }
 
-       emit('guardar-paciente')
+        emit('guardar-paciente')
+        alerta.mensaje = 'Paciente agregado correctamente'
+        alerta.tipo = 'exito'
+
+        setTimeout(() => {
+            Object.assign(alerta, {
+                tipo:'',
+                mensaje:''
+            })
+        }, 3000)
     }
+
+    const editando = computed(() => {
+        return props.id
+    })
+
 </script>
 
 <template>
@@ -149,7 +167,7 @@
             <input
                 type="submit"
                 class="w-full p-3 font-bold text-white uppercase transition-colors bg-indigo-600 cursor-pointer hover:bg-indigo-700"
-                value="Registrar Paciente"
+                :value="[editando ? 'Guardar cambios' : 'Registrar paciente']"
             />
         </form>
     </div>
